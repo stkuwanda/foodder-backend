@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import { connect } from './config/db.js';
+import foodRouter from './routes/food.route.js';
 
 // app config
 const app = express();
@@ -14,6 +15,9 @@ app.use(
 
 // connect to db
 connect();
+
+// api endpoints
+app.use('/api/food', foodRouter);
 
 // routes
 app.get('/', (req, res) => {
