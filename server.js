@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import { connect } from './config/db.js';
 
 // app config
 const app = express();
@@ -11,9 +12,12 @@ app.use(
   cors() // access backend from anywhere
 );
 
+// connect to db
+connect();
+
 // routes
 app.get('/', (req, res) => {
-  res.send('API working...')
+  res.send('API working...');
 });
 
 app.listen(port, () => {
