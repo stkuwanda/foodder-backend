@@ -1,14 +1,36 @@
-import { userModel } from '../models/user.model.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import validator from 'validator';
+import { userModel } from '../models/user.model.js';
+import { handleError } from '../util/errors.js';
 
 function createToken(id) {
   return jwt.sign({id}, process.env.JWT_SECRET);
 }
 
 // login a user
-export async function loginUser(req, res) {}
+export async function loginUser(req, res) {
+  const { email, password } = req.body;
+
+  try {
+    const user = await userModel.findOne({ email });
+
+    if(!user) {
+      return res.status(404).json({ success: false, message: 'Not found!'});
+    }
+
+    const isMatching = await bcrypt.compare(password, user.password);
+
+    if(!isMatching) {
+      return res.status(401).json({ success: false, message: 'Authentication failed! Invalid credentials'});
+    }
+
+    const token = createToken(user._id);
+    res.status(200).json({success: true, token, message: 'Access granted.'})
+  } catch (error) {
+    handleError(error, res);
+  }
+}
 
 // register a user
 export async function registerUser(req, res) {
@@ -72,7 +94,8 @@ export async function registerUser(req, res) {
     res.status(201).json({ success: true, token, message: 'New user registered.' });
   
 	} catch (error) {
-    console.log(error);
-    res.status(500).json({ success: false, message: 'Operation failed with an error.' });
+    handleError(error, res);
   }
 }
+
+

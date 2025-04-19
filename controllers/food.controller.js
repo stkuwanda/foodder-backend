@@ -1,5 +1,6 @@
 import fs from 'fs';
 import foodModel from '../models/food.model.js';
+import { handleError } from '../util/errors.js';
 
 // add food item
 export async function addFood(req, res) {
@@ -20,8 +21,7 @@ export async function addFood(req, res) {
 		await food.save();
 		res.status(201).json({ success: true, message: 'Operation succeeded.' });
 	} catch (error) {
-		console.log(error);
-		res.status(500).json({ success: false, message: 'Operation failed with an error.' });
+		handleError(error, res);
 	}
 }
 
@@ -33,8 +33,7 @@ export async function listAllFood(req, res) {
 			.status(201)
 			.json({ success: true, data: foods, message: 'Operation succeeded.' });
 	} catch (error) {
-		console.log(error);
-		res.status(500).json({ success: false, message: 'Operation failed with an error.' });
+		handleError(error, res);
 	}
 }
 
@@ -46,8 +45,7 @@ export async function removeFood(req, res) {
 		await foodModel.findByIdAndDelete(req.body.id);
 		res.status(200).json({ success: true, message: 'food item removed' });
 	} catch (error) {
-		console.log(error);
-		res.status(500).json({ success: false, message: 'Operation failed with an error.' });
+		handleError(error, res);
 	}
 }
 
@@ -95,7 +93,6 @@ export async function updateFood(req, res) {
 			.status(200)
 			.json({ success: true, data: updatedItem, message: 'Operation succeeded.' });
 	} catch (error) {
-		console.log(error);
-		res.status(500).json({ success: false, message: 'Operation failed with an error.' });
+		handleError(error, res);
 	}
 }
