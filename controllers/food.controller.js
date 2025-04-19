@@ -18,10 +18,10 @@ export async function addFood(req, res) {
 	// create data into db
 	try {
 		await food.save();
-		res.status(201).json({ success: true, message: 'food added' });
+		res.status(201).json({ success: true, message: 'Operation succeeded.' });
 	} catch (error) {
 		console.log(error);
-		res.status(500).json({ success: false, message: error.message });
+		res.status(500).json({ success: false, message: 'Operation failed with an error.' });
 	}
 }
 
@@ -31,10 +31,10 @@ export async function listAllFood(req, res) {
 		const foods = await foodModel.find({});
 		res
 			.status(201)
-			.json({ success: true, data: foods, message: 'Retrieved food list.' });
+			.json({ success: true, data: foods, message: 'Operation succeeded.' });
 	} catch (error) {
 		console.log(error);
-		res.status(500).json({ success: false, message: error.message });
+		res.status(500).json({ success: false, message: 'Operation failed with an error.' });
 	}
 }
 
@@ -47,7 +47,7 @@ export async function removeFood(req, res) {
 		res.status(200).json({ success: true, message: 'food item removed' });
 	} catch (error) {
 		console.log(error);
-		res.status(500).json({ success: false, message: error.message });
+		res.status(500).json({ success: false, message: 'Operation failed with an error.' });
 	}
 }
 
@@ -93,9 +93,9 @@ export async function updateFood(req, res) {
 		// If the item was successfully updated, return the updated item.
 		res
 			.status(200)
-			.json({ success: true, data: updatedItem, message: 'food item updated' });
+			.json({ success: true, data: updatedItem, message: 'Operation succeeded.' });
 	} catch (error) {
 		console.log(error);
-		res.status(500).json({ success: false, message: error.message });
+		res.status(500).json({ success: false, message: 'Operation failed with an error.' });
 	}
 }
