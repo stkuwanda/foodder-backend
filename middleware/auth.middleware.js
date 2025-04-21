@@ -12,7 +12,6 @@ async function authenticate(req, res, next) {
     const decodedToken = verifyToken(token);
     req.body.userId = decodedToken.id;
   } catch (error) {
-    console.log(error);
     handleError(error, res);
   }
 }
