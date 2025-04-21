@@ -1,6 +1,6 @@
 import fs from 'fs';
 import foodModel from '../models/food.model.js';
-import { handleError } from '../util/errors.js';
+import { handleError } from '../utils/errors.js';
 
 // add food item
 export async function addFood(req, res) {
@@ -91,7 +91,11 @@ export async function updateFood(req, res) {
 		// If the item was successfully updated, return the updated item.
 		res
 			.status(200)
-			.json({ success: true, data: updatedItem, message: 'Operation succeeded.' });
+			.json({
+				success: true,
+				data: updatedItem,
+				message: 'Operation succeeded.',
+			});
 	} catch (error) {
 		handleError(error, res);
 	}

@@ -1,5 +1,5 @@
 import { userModel } from '../models/user.model.js';
-import { handleError } from '../util/errors.js';
+import { handleError } from '../utils/errors.js';
 
 // add items to a user's cart
 export async function addToCart(req, res) {
@@ -31,9 +31,13 @@ export async function removeFromCart(req, res) {
 			cartData[req.body.itemId] -= 1;
 			await userModel.findByIdAndUpdate(req.body.userId, { cartData });
 
-			return res.status(200).json({ success: true, message: 'Item removed from cart.' });
+			return res
+				.status(200)
+				.json({ success: true, message: 'Item removed from cart.' });
 		} else {
-			return res.status(200).json({ success: true, message: 'This cart empty.' });
+			return res
+				.status(200)
+				.json({ success: true, message: 'This cart empty.' });
 		}
 	} catch (error) {
 		handleError(error, res);
@@ -45,7 +49,9 @@ export async function retrieveCart(req, res) {
 	try {
 		let userData = await userModel.findById(req.body.userId);
 		let cartData = userData.cartData;
-		res.status(200).json({ success: true, cartData, message: 'Retrieved cart data.' });
+		res
+			.status(200)
+			.json({ success: true, cartData, message: 'Retrieved cart data.' });
 	} catch (error) {
 		handleError(error, res);
 	}
