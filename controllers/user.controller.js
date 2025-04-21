@@ -1,12 +1,10 @@
-import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import validator from 'validator';
 import { userModel } from '../models/user.model.js';
 import { handleError } from '../util/errors.js';
+import { createToken } from '../util/jwt.js';
 
-function createToken(id) {
-  return jwt.sign({id}, process.env.JWT_SECRET);
-}
+
 
 // login a user
 export async function loginUser(req, res) {
