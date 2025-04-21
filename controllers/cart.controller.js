@@ -41,4 +41,12 @@ export async function removeFromCart(req, res) {
 }
 
 // fetch user cart data
-export async function retrieveCart(req, res) {}
+export async function retrieveCart(req, res) {
+	try {
+		let userData = await userModel.findById(req.body.userId);
+		let cartData = userData.cartData;
+		res.status(200).json({ success: true, cartData, message: 'Retrieved cart data.' });
+	} catch (error) {
+		handleError(error, res);
+	}
+}
