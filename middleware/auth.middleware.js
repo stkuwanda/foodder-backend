@@ -10,7 +10,6 @@ async function authenticate(req, res, next) {
 
   try {
     const decodedToken = verifyToken(token);
-    console.log('decodedToken:',decodedToken);
     req.body = req.body ? req.body : {};
     req.body.userId = decodedToken.id;
     next();
