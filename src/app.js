@@ -3,6 +3,7 @@ import cors from 'cors';
 import foodRouter from './routes/food.route.js';
 import userRouter from './routes/user.route.js';
 import cartRouter from './routes/cart.route.js';
+import orderRouter from './routes/order.route.js';
 
 // app config
 const app = express();
@@ -17,6 +18,7 @@ app.use(
 app.use('/api/food', foodRouter);
 app.use('/api/user', userRouter);
 app.use('/api/cart', cartRouter);
+app.use('/api/order', orderRouter);
 app.use('/images', express.static('uploads'));
 
 export default app;
