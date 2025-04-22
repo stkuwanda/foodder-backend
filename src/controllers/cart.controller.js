@@ -35,9 +35,21 @@ export async function removeFromCart(req, res) {
 				.status(200)
 				.json({ success: true, message: 'Item removed from cart.' });
 		} else {
+
+			// set cartData to empty object if all cartItem properties across the cartData object
+			// have a total count of zero
+			const cartValues = Object.values(cartData);
+			const sum = cartValues.reduce((accumulator, currentValue) => {
+				return accumulator + currentValue;
+			}, 0);
+
+			if(sum < 1) {
+				await userModel.findByIdAndUpdate(req.body.userId, { cartData: {} });
+			}
+			
 			return res
 				.status(200)
-				.json({ success: true, message: 'This cart empty.' });
+				.json({ success: true, message: 'This cart is empty.' });
 		}
 	} catch (error) {
 		handleError(error, res);
