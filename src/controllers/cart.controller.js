@@ -1,4 +1,5 @@
 import { userModel } from '../models/user.model.js';
+import { checkIfCartIsEmpty } from '../utils/cart.js';
 import { handleError } from '../utils/errors.js';
 
 // add items to a user's cart
@@ -23,33 +24,36 @@ export async function addToCart(req, res) {
 
 // remove items from a user's cart
 export async function removeFromCart(req, res) {
+	let message = 'Item removed from cart.';
+
 	try {
 		let userData = await userModel.findById(req.body.userId);
 		let cartData = userData.cartData;
 
 		if (cartData[req.body.itemId] > 0) {
 			cartData[req.body.itemId] -= 1;
-			await userModel.findByIdAndUpdate(req.body.userId, { cartData });
 
-			return res
-				.status(200)
-				.json({ success: true, message: 'Item removed from cart.' });
-		} else {
-
-			// set cartData to empty object if all cartItem properties across the cartData object
-			// have a total count of zero
-			const cartValues = Object.values(cartData);
-			const sum = cartValues.reduce((accumulator, currentValue) => {
-				return accumulator + currentValue;
-			}, 0);
-
-			if(sum < 1) {
-				await userModel.findByIdAndUpdate(req.body.userId, { cartData: {} });
-			}
+			userData = await userModel.findByIdAndUpdate(
+				req.body.userId,
+				{ cartData },
+				{ new: true }
+			);
 			
-			return res
-				.status(200)
-				.json({ success: true, message: 'This cart is empty.' });
+			cartData = userData.cartData;
+
+			if (checkIfCartIsEmpty(cartData)) {
+				await userModel.findByIdAndUpdate(req.body.userId, { cartData: {} });
+				message = 'This cart is empty.';
+			}
+
+			return res.status(200).json({ success: true, message });
+		} else {
+			if (checkIfCartIsEmpty(cartData)) {
+				await userModel.findByIdAndUpdate(req.body.userId, { cartData: {} });
+				message = 'This cart is empty.';
+			}
+
+			return res.status(200).json({ success: true, message });
 		}
 	} catch (error) {
 		handleError(error, res);
