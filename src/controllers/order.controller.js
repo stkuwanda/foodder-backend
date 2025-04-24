@@ -46,3 +46,22 @@ export async function placeOrder(req, res) {
 		handleError(error, res);
 	}
 }
+
+// very order
+export async function verifyOrder(req, res) {
+	const { orderId, success } = req.body;
+	console.log(`orderId: ${orderId}, success: ${success}`);
+
+	try {
+		if (success === 'true') {
+			await orderModel.findByIdAndUpdate(orderId, { payment: true });
+
+			return res.status(200).json({ success: true, message: 'Paid'});
+		}
+
+		await orderModel.findByIdAndDelete(orderId);
+		res.status(200).json({ success: false, message: 'Unpaid' });
+	} catch (error) {
+		handleError(error, res);
+	}
+}
