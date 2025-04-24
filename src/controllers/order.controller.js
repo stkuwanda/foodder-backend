@@ -65,3 +65,15 @@ export async function verifyOrder(req, res) {
 		handleError(error, res);
 	}
 }
+
+// frontend user orders
+export async function listUserOrders(req, res) {
+	const { userId } = req.body;
+	try {
+		// get orders
+		const data = await orderModel.find({ userId });
+		res.status(200).json({ success: true, data, message: 'Orders data.' });
+	} catch (error) {
+		handleError(error, res);
+	}
+}
