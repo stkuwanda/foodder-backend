@@ -56,7 +56,7 @@ export async function verifyOrder(req, res) {
 		if (success === 'true') {
 			await orderModel.findByIdAndUpdate(orderId, { payment: true });
 
-			return res.status(200).json({ success: true, message: 'Paid'});
+			return res.status(200).json({ success: true, message: 'Paid' });
 		}
 
 		await orderModel.findByIdAndDelete(orderId);
