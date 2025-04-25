@@ -22,6 +22,19 @@ export async function addToCart(req, res) {
 	}
 }
 
+export async function setNewCart(req, res) {
+	const { cartData, userId } = req.body;
+	console.log(`cartData: ${cartData} and userId: ${userId}`);
+
+	try {
+		await userModel.findByIdAndUpdate(userId, { cartData });
+
+		res.status(201).json({ success: true, message: 'Added new cart' });
+	} catch (error) {
+		handleError(error, res);
+	}
+}
+
 // remove items from a user's cart
 export async function removeFromCart(req, res) {
 	let message = 'Item removed from cart.';
