@@ -24,7 +24,6 @@ export async function addToCart(req, res) {
 
 export async function setNewCart(req, res) {
 	const { cartData, userId } = req.body;
-	console.log(`cartData: ${cartData} and userId: ${userId}`);
 
 	try {
 		await userModel.findByIdAndUpdate(userId, { cartData });
