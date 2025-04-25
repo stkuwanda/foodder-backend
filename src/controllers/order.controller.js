@@ -50,7 +50,6 @@ export async function placeOrder(req, res) {
 // very order
 export async function verifyOrder(req, res) {
 	const { orderId, success } = req.body;
-	console.log(`orderId: ${orderId}, success: ${success}`);
 
 	try {
 		if (success === 'true') {
