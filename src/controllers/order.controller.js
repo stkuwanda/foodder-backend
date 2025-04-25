@@ -76,3 +76,14 @@ export async function listUserOrders(req, res) {
 		handleError(error, res);
 	}
 }
+
+// admin orders list
+export async function listOrders(req, res) {
+	try {
+		// get orders
+		const data = await orderModel.find({});
+		res.status(200).json({ success: true, data, message: 'Orders data.' });
+	} catch (error) {
+		handleError(error, res);
+	}
+}
