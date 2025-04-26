@@ -47,7 +47,7 @@ export async function placeOrder(req, res) {
 	}
 }
 
-// very order
+// verify order
 export async function verifyOrder(req, res) {
 	const { orderId, success } = req.body;
 
@@ -83,6 +83,17 @@ export async function listOrders(req, res) {
 		// get orders
 		const data = await orderModel.find({});
 		res.status(200).json({ success: true, data, message: 'Orders data.' });
+	} catch (error) {
+		handleError(error, res);
+	}
+}
+
+// update order status
+export async function updateOrderStatus(req, res) {
+	const { orderId, status } = req.body;
+	try {
+		await orderModel.findByIdAndUpdate(orderId, { status });
+		res.status(200).json({ success: true, message: 'Status updated' });
 	} catch (error) {
 		handleError(error, res);
 	}
